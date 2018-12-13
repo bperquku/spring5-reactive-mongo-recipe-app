@@ -2,6 +2,7 @@ package guru.springframework.repositories.reactive;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,26 +15,34 @@ import reactor.core.publisher.Mono;
 @DataMongoTest
 public class CategoryReactiveRepositoryTest {
 
-  @Autowired CategoryReactiveRepository repository;
+  @Autowired CategoryReactiveRepository categoryReactiveRepository;
+
+  @Before
+  public void setUp() throws Exception {
+    categoryReactiveRepository.deleteAll().block();
+  }
 
   @Test
   public void testSave() throws Exception {
     Category category = new Category();
     category.setDescription("Foo");
-    repository.save(category).block();
 
-    Long count = repository.count().block();
-    assertEquals(Long.valueOf(1), count);
+    categoryReactiveRepository.save(category).block();
+
+    Long count = categoryReactiveRepository.count().block();
+
+    assertEquals(Long.valueOf(1L), count);
   }
-  
+
   @Test
   public void testFindByDescription() throws Exception {
     Category category = new Category();
     category.setDescription("Foo");
-    
-    repository.save(category).then().block();
 
-    Category fetchCat = repository.findByDescription("Foo").block();
-    assertNotNull(fetchCat.getId());
+    categoryReactiveRepository.save(category).then().block();
+
+    Category fetchedCat = categoryReactiveRepository.findByDescription("Foo").block();
+
+    assertNotNull(fetchedCat.getId());
   }
 }
