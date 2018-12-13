@@ -151,7 +151,7 @@
                                         <li th:remove="all">asdf</li>
                                         <li th:each="ingredient : ${recipe.ingredients}"
                                             th:text="${(ingredient.getAmount() +
-                                        ' ' + ingredient.unitOfMeasure.getDescription() +
+                                        ' ' + ingredient.uom.getDescription() +
                                         ' - ' + ingredient.getDescription())}">1 Teaspoon of Sugar
                                         </li>
                                     </ul>
@@ -159,7 +159,7 @@
                                         <input  type="hidden" th:field="*{ingredients[__${idx.index}__].id}" />
                                         <input  type="hidden" th:field="*{ingredients[__${idx.index}__].description}" />
                                         <input  type="hidden" th:field="*{ingredients[__${idx.index}__].amount}" />
-                                        <input  type="hidden" th:field="*{ingredients[__${idx.index}__].unitOfMeasure.id}" />
+                                        <input  type="hidden" th:field="*{ingredients[__${idx.index}__].uom.id}" />
                                     </div>
                                     <div th:each="catEach, idx : ${recipe.categories}" >
                                         <input  type="hidden" th:field="*{categories[__${idx.index}__].id}" />
