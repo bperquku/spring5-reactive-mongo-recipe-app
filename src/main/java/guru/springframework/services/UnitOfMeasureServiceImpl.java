@@ -1,17 +1,11 @@
 package guru.springframework.services;
 
+import org.springframework.stereotype.Service;
 import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.converters.UnitOfMeasureToUnitOfMeasureCommand;
-import guru.springframework.repositories.UnitOfMeasureRepository;
 import guru.springframework.repositories.reactive.UnitOfMeasureReactiveRepository;
 import reactor.core.publisher.Flux;
-import org.springframework.stereotype.Service;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-/** Created by jt on 6/28/17. */
 @Service
 public class UnitOfMeasureServiceImpl implements UnitOfMeasureService {
 
