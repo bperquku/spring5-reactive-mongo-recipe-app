@@ -2,6 +2,8 @@ package guru.springframework.services;
 
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.RecipeRepository;
+import guru.springframework.repositories.reactive.RecipeReactiveRepository;
+import reactor.core.publisher.Mono;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -19,7 +21,7 @@ import static org.mockito.Mockito.*;
 public class ImageServiceImplTest {
 
     @Mock
-    RecipeRepository recipeRepository;
+    RecipeReactiveRepository recipeReactiveRepository;
 
     ImageService imageService;
 
@@ -27,31 +29,31 @@ public class ImageServiceImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        imageService = new ImageServiceImpl(recipeRepository);
+        imageService = new ImageServiceImpl(recipeReactiveRepository);
     }
 
     @Test
     public void saveImageFile() throws Exception {
-        //given
-        String id = "1";
-        MultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt", "text/plain",
-                "Spring Framework Guru".getBytes());
+      //given
+      String id = "1";
+      MultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt", "text/plain",
+              "Spring Framework Guru".getBytes());
 
-        Recipe recipe = new Recipe();
-        recipe.setId(id);
-        Optional<Recipe> recipeOptional = Optional.of(recipe);
+      Recipe recipe = new Recipe();
+      recipe.setId(id);
 
-        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
+      when(recipeReactiveRepository.findById(anyString())).thenReturn(Mono.just(recipe));
+      when(recipeReactiveRepository.save(any(Recipe.class))).thenReturn(Mono.just(recipe));
 
-        ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+      ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
 
-        //when
-        imageService.saveImageFile(id, multipartFile);
+      //when
+      imageService.saveImageFile(id, multipartFile);
 
-        //then
-        verify(recipeRepository, times(1)).save(argumentCaptor.capture());
-        Recipe savedRecipe = argumentCaptor.getValue();
-        assertEquals(multipartFile.getBytes().length, savedRecipe.getImage().length);
+      //then
+      verify(recipeReactiveRepository, times(1)).save(argumentCaptor.capture());
+      Recipe savedRecipe = argumentCaptor.getValue();
+      assertEquals(multipartFile.getBytes().length, savedRecipe.getImage().length);
     }
 
 }
