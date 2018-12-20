@@ -6,6 +6,9 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+/**
+ * Created by jt on 6/13/17.
+ */
 @Getter
 @Setter
 public class Ingredient {

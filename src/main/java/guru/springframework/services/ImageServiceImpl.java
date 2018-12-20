@@ -9,6 +9,9 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
+/**
+ * Created by jt on 7/3/17.
+ */
 @Slf4j
 @Service
 public class ImageServiceImpl implements ImageService {
